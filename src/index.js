@@ -35,3 +35,5 @@ async function loadCity(name) {
     ...snapshot.data(),
   };
 }
+
+loadCity('Kortrijk').then(city => {console.log(city)});
