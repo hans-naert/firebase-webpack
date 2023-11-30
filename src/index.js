@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp,  } from "firebase/app";
+import { initializeApp, } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,4 +36,35 @@ async function loadCity(name) {
   };
 }
 
-loadCity('Kortrijk').then(city => {console.log(city)});
+(async () => {
+  try {
+    const city = await loadCity('Kortrijk');
+    console.log(city);
+  }
+  catch (e) {
+    console.log(e);
+  }
+})();
+
+document.querySelector('#login-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const form = document.querySelector('#login-form');
+  console.log(form);
+  const email = form.email.value
+  const password = form.password.value;
+  const createAccount = form.createAccount.checked;
+  console.log(email, password, createAccount);
+  try {
+    let userCredential;
+    if (createAccount == false) {
+      userCredential = await signInWithEmailAndPassword(auth, email, password);
+    } else {
+      userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    }
+    console.log(`Signed in user: ${JSON.stringify(userCredential)}`);
+  }  catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+    console.log(error);
+  }});
