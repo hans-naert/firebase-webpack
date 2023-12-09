@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "fir-project-ff991"
-  }
+    "default": "fir-project-les"
+  },
+  "targets": {},
+  "etags": {}
 }
